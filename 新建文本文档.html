@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>长青小区档案</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+background:#050505;
+font-family:Consolas,monospace;
+overflow:hidden;
+color:#ddd;
+
+}
+
+/* 背景 */
+
+body::before{
+
+content:"";
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+
+background:
+linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.8)),
+url("https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80");
+
+background-size:cover;
+background-position:center;
+
+filter:blur(2px) brightness(.4);
+
+z-index:-2;
+
+}
+
+/* CRT */
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+background:
+
+repeating-linear-gradient(
+
+0deg,
+
+rgba(255,255,255,.03),
+
+rgba(255,255,255,.03) 2px,
+
+transparent 2px,
+
+transparent 4px
+
+);
+
+pointer-events:none;
+
+animation:flicker .15s infinite;
+
+z-index:999;
+
+}
+
+@keyframes flicker{
+
+0%{opacity:.12;}
+50%{opacity:.25;}
+100%{opacity:.1;}
+
+}
+
+/* 标题 */
+
+.title{
+
+text-align:center;
+margin-top:40px;
+
+}
+
+.title h1{
+
+font-size:46px;
+letter-spacing:8px;
+
+}
+
+.title p{
+
+margin-top:10px;
+color:#888;
+
+}
+
+/* 楼 */
+
+.building{
+
+width:520px;
+
+margin:40px auto;
+
+display:grid;
+
+grid-template-columns:repeat(4,100px);
+
+gap:18px;
+
+justify-content:center;
+
+}
+
+/* 房间 */
+
+.room{
+
+height:90px;
+
+background:#1d1d1d;
+
+border:2px solid #444;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+cursor:pointer;
+
+transition:.3s;
+
+position:relative;
+
+font-size:20px;
+
+}
+
+.room:hover{
+
+background:#555;
+
+transform:scale(1.05);
+
+}
+
+/* 灯 */
+
+.room::before{
+
+content:"";
+
+position:absolute;
+
+top:10px;
+
+right:10px;
+
+width:10px;
+
+height:10px;
+
+background:#222;
+
+border-radius:50%;
+
+}
+
+/* 有人 */
+
+.live::before{
+
+background:#ffd84a;
+
+box-shadow:0 0 10px gold;
+
+animation:blink 2s infinite;
+
+}
+
+@keyframes blink{
+
+50%{
+
+opacity:.3;
+
+}
+
+}
+
+/* 底部 */
+
+.footer{
+
+position:fixed;
+
+bottom:20px;
+
+width:100%;
+
+text-align:center;
+
+color:#666;
+
+font-size:14px;
+
+}
+
+/* 开始提示 */
+
+.start{
+
+position:fixed;
+
+top:15px;
+
+left:20px;
+
+font-size:14px;
+
+color:#888;
+
+animation:typing 4s steps(30);
+
+overflow:hidden;
+
+white-space:nowrap;
+
+}
+
+@keyframes typing{
+
+from{width:0;}
+to{width:350px;}
+
+}
+
+/* 闪屏 */
+
+.flash{
+
+animation:flash 6s infinite;
+
+}
+
+@keyframes flash{
+
+0%,96%,100%{
+
+filter:none;
+
+}
+
+97%{
+
+filter:brightness(4);
+
+}
+
+98%{
+
+filter:invert(1);
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body class="flash">
+
+<div class="start">
+
+SYSTEM : Archive Loaded...
+
+</div>
+
+<div class="title">
+
+<h1>长青小区</h1>
+
+<p>请选择住户档案</p>
+
+</div>
+
+<div class="building">
+
+<div class="room live" onclick="go('601')">601</div>
+<div class="room">602</div>
+<div class="room">603</div>
+<div class="room">604</div>
+
+<div class="room">501</div>
+<div class="room">502</div>
+<div class="room">503</div>
+<div class="room">504</div>
+
+<div class="room">401</div>
+<div class="room">402</div>
+<div class="room">403</div>
+<div class="room">404</div>
+
+<div class="room live" onclick="go('301')">301</div>
+<div class="room">302</div>
+<div class="room">303</div>
+<div class="room">304</div>
+
+<div class="room">201</div>
+<div class="room">202</div>
+<div class="room">203</div>
+<div class="room">204</div>
+
+<div class="room">101</div>
+<div class="room">102</div>
+<div class="room">103</div>
+<div class="room">104</div>
+
+</div>
+
+<div class="footer">
+
+1987 - 长青小区居民档案系统 V1.28
+
+</div>
+
+<script>
+
+function go(id){
+
+location.href="resident.html?id="+id;
+
+}
+
+// 五分钟后出现异常（演示可改短）
+setTimeout(()=>{
+
+document.querySelector(".footer").innerHTML="正在同步居民数据...";
+
+},300000);
+
+// 随机闪烁灯光
+
+setInterval(()=>{
+
+let rooms=document.querySelectorAll(".room");
+
+let r=Math.floor(Math.random()*rooms.length);
+
+rooms[r].classList.toggle("live");
+
+},2000);
+
+// 极低概率异常文字
+
+setInterval(()=>{
+
+if(Math.random()<0.02){
+
+document.querySelector(".title p").innerHTML="不要相信四楼。";
+
+setTimeout(()=>{
+
+document.querySelector(".title p").innerHTML="请选择住户档案";
+
+},4000);
+
+}
+
+},3000);
+
+</script>
+
+</body>
+</html>
